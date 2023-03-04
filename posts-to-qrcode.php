@@ -22,15 +22,32 @@ function post_qrcode_load_textdomain() {
     load_plugin_textdomain('posts-toQr', false, dirname(__FILE__) . '/languages');
 }
 
+function posts_qrcode_enque_style() {
+    wp_enqueue_style('posts_to_qrcode_style', plugin_dir_url(__FILE__) . "style.css");
+}
+
+add_action('wp_enqueue_scripts', 'posts_qrcode_enque_style');
+
+
 function post_to_qrcode_genrate($content) {
     $current_post_id = get_the_ID();
     $current_post_url =  get_the_permalink($current_post_id);  //urlencode 
     $alt_text = get_the_title($current_post_id);
-    $qrcode_size = '150*200';
+    $qrcode_size = '100x100';
+    $qrcode_size = apply_filters('posts_qrcode_size', $qrcode_size);
 
-    $Qrcode =  sprintf('<img src="https://api.qrserver.com/v1/create-qr-code/?size=%s&ecc=L&qzone=1&data=%s" alt="%s" srcset="">', $qrcode_size, $current_post_url, $alt_text);
+    $Qrcode =  sprintf('<div class="posts_qrcode"> <img src="https://api.qrserver.com/v1/create-qr-code/?size=%s&ecc=L&qzone=1&data=%s" alt="%s" srcset=""> </div>', $qrcode_size, $current_post_url, $alt_text);
     $content .= $Qrcode;
     return $content;
 }
 
 add_filter('the_content', 'post_to_qrcode_genrate', 10);
+
+
+
+function cng_posts_qrcode_size($qrcode_size) {
+    $qrcode_size = '200x200';
+    return $qrcode_size;
+}
+
+// add_filter('posts_qrcode_size', 'cng_posts_qrcode_size');

@@ -7,10 +7,10 @@
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            MD.Ridwan
- * Author URI:        
+ * Author URI:        https://github.com/ridwan-shakil/P
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Update URI:        https://example.com/my-plugin/
+ * Update URI:        
  * Text Domain:       posts-toQr
  * Domain Path:       /languages
  */
@@ -36,18 +36,16 @@ function post_to_qrcode_genrate($content) {
     $qrcode_size = '100x100';
     $qrcode_size = apply_filters('posts_qrcode_size', $qrcode_size);
 
+    // excluded post types 
+    $current_post_type = get_post_type($current_post_id);
+    $excluded_post_types = apply_filters('qrcode_excluded_post_tppes', []);
+    if (in_array($current_post_type, $excluded_post_types)) {
+        return $content;
+    };
+
     $Qrcode =  sprintf('<div class="posts_qrcode"> <img src="https://api.qrserver.com/v1/create-qr-code/?size=%s&ecc=L&qzone=1&data=%s" alt="%s" srcset=""> </div>', $qrcode_size, $current_post_url, $alt_text);
     $content .= $Qrcode;
     return $content;
 }
 
 add_filter('the_content', 'post_to_qrcode_genrate', 10);
-
-
-
-function cng_posts_qrcode_size($qrcode_size) {
-    $qrcode_size = '200x200';
-    return $qrcode_size;
-}
-
-// add_filter('posts_qrcode_size', 'cng_posts_qrcode_size');

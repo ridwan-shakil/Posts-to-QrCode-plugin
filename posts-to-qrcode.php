@@ -22,19 +22,24 @@ function post_qrcode_load_textdomain() {
     load_plugin_textdomain('posts-toQr', false, dirname(__FILE__) . '/languages');
 }
 
+// adding stylesheet 
 function posts_qrcode_enque_style() {
     wp_enqueue_style('posts_to_qrcode_style', plugin_dir_url(__FILE__) . "style.css");
 }
 
 add_action('wp_enqueue_scripts', 'posts_qrcode_enque_style');
 
-
+// Showing QrCode 
 function post_to_qrcode_genrate($content) {
     $current_post_id = get_the_ID();
     $current_post_url =  get_the_permalink($current_post_id);  //urlencode 
     $alt_text = get_the_title($current_post_id);
-    $qrcode_size = '100x100';
-    $qrcode_size = apply_filters('posts_qrcode_size', $qrcode_size);
+    $qrheight = get_option('qrheight');
+    $qrwidth = get_option('qrwidth');
+    $qrheight = $qrheight ? $qrheight : 150;
+    $qrwidth = $qrwidth ? $qrwidth : 150;
+    $qrdimension = "{$qrheight}x{$qrwidth}";
+    $qrcode_size = apply_filters('posts_qrcode_size', $qrdimension);
 
     // excluded post types 
     $current_post_type = get_post_type($current_post_id);
@@ -48,4 +53,27 @@ function post_to_qrcode_genrate($content) {
     return $content;
 }
 
-add_filter('the_content', 'post_to_qrcode_genrate', 10);
+add_filter('the_content', 'post_to_qrcode_genrate', 9);
+
+
+// adding height & width from setting options 
+
+function add_pqrc_dimenson() {
+    add_settings_field('qrheight', 'QrCode height', 'clbc_pqrc_height', 'general');
+    add_settings_field('qrwidth', 'QrCode width', 'clbc_pqrc_width', 'general');
+    register_setting('general', 'qrheight');
+    register_setting('general', 'qrwidth');
+}
+
+function clbc_pqrc_height() {
+?>
+    <input type="text" name="qrheight" id="" value="<?php echo get_option('qrheight', 150); ?>">
+<?php
+}
+
+function clbc_pqrc_width() {
+    $width = get_option('qrwidth', 150);
+    printf('<input type="text" name="qrwidth" id="" value="%s">', $width);
+}
+
+add_action('admin_init', 'add_pqrc_dimenson');

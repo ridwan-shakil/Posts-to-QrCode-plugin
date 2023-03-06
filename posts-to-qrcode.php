@@ -59,21 +59,17 @@ add_filter('the_content', 'post_to_qrcode_genrate', 9);
 // adding height & width from setting options 
 
 function add_pqrc_dimenson() {
-    add_settings_field('qrheight', 'QrCode height', 'clbc_pqrc_height', 'general');
-    add_settings_field('qrwidth', 'QrCode width', 'clbc_pqrc_width', 'general');
-    register_setting('general', 'qrheight');
-    register_setting('general', 'qrwidth');
+    add_settings_section('pqrc_section', 'Post to QrCode :', '', 'general',);
+    add_settings_field('height', 'QrCode height', 'clbc_pqrc_dimension', 'general', 'pqrc_section', ['height']);
+    add_settings_field('width', 'QrCode width', 'clbc_pqrc_dimension', 'general', 'pqrc_section', ['width']);
+    register_setting('general', 'height');
+    register_setting('general', 'width');
 }
 
-function clbc_pqrc_height() {
-?>
-    <input type="text" name="qrheight" id="" value="<?php echo get_option('qrheight', 150); ?>">
-<?php
-}
-
-function clbc_pqrc_width() {
-    $width = get_option('qrwidth', 150);
-    printf('<input type="text" name="qrwidth" id="" value="%s">', $width);
+function clbc_pqrc_dimension($args) {
+    $value = get_option($args[0], 150);
+    $name = $args[0];
+    printf('<input type="text" name="%s" id="" value="%s">', $name, $value);
 }
 
 add_action('admin_init', 'add_pqrc_dimenson');

@@ -64,10 +64,10 @@ function add_pqrc_dimenson() {
     add_settings_field('width', 'QrCode width', 'clbc_pqrc_dimension', 'general', 'pqrc_section', ['width']);
 
     add_settings_field('pqrc_country', 'Select country', 'clbc_pqrc_country', 'general', 'pqrc_section');
-    register_setting('general', 'pqrc_country');
+    register_setting('general', 'pqrc_country', array(' sanitize_callback' => 'esc_attr'));
 
-    register_setting('general', 'height');
-    register_setting('general', 'width');
+    register_setting('general', 'height', array(' sanitize_callback' => 'esc_attr'));
+    register_setting('general', 'width', array(' sanitize_callback' => 'esc_attr'));
 }
 
 function clbc_pqrc_dimension($args) {

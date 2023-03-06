@@ -60,14 +60,14 @@ add_filter('the_content', 'post_to_qrcode_genrate', 9);
 
 function add_pqrc_dimenson() {
     add_settings_section('pqrc_section', 'Post to QrCode :', '', 'general',);
-    add_settings_field('height', 'QrCode height', 'clbc_pqrc_dimension', 'general', 'pqrc_section', ['height']);
-    add_settings_field('width', 'QrCode width', 'clbc_pqrc_dimension', 'general', 'pqrc_section', ['width']);
+    add_settings_field('qrheight', 'QrCode height', 'clbc_pqrc_dimension', 'general', 'pqrc_section', ['qrheight']);
+    add_settings_field('qrwidth', 'QrCode width', 'clbc_pqrc_dimension', 'general', 'pqrc_section', ['qrwidth']);
 
     add_settings_field('pqrc_country', 'Select country', 'clbc_pqrc_country', 'general', 'pqrc_section');
     register_setting('general', 'pqrc_country', array(' sanitize_callback' => 'esc_attr'));
 
-    register_setting('general', 'height', array(' sanitize_callback' => 'esc_attr'));
-    register_setting('general', 'width', array(' sanitize_callback' => 'esc_attr'));
+    register_setting('general', 'qrheight', array(' sanitize_callback' => 'esc_attr'));
+    register_setting('general', 'qrwidth', array(' sanitize_callback' => 'esc_attr'));
 }
 
 function clbc_pqrc_dimension($args) {
@@ -84,7 +84,7 @@ function clbc_pqrc_country() {
         'None', 'Bangladesh', 'india', 'Nepal', 'Vutan', 'Pakistan'
     ];
 
-
+    $countries = apply_filters('pqrc_add_country', $countries);
     echo '<select name="pqrc_country" id="pqrc_country">';
 
     foreach ($countries as $country) {
@@ -101,3 +101,13 @@ function clbc_pqrc_country() {
 }
 
 add_action('admin_init', 'add_pqrc_dimenson');
+
+
+// test 
+function add_new_country($countries) {
+    array_push($countries, 'Russia', 'Ukrain', 'Turky'); //adding new values into an array
+    $countries = array_diff($countries, ['Pakistan']);  //removing values from an array
+    return $countries;
+}
+
+add_filter('pqrc_add_country', 'add_new_country');

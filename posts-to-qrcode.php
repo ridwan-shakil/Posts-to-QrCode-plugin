@@ -22,7 +22,22 @@ function post_qrcode_load_textdomain() {
     load_plugin_textdomain('posts-toQr', false, dirname(__FILE__) . '/languages');
 }
 
-// adding stylesheet 
+// adding scripts for admin panel 
+function pqrc_enque_admin_scripts($screen) {
+    if ($screen == 'options-general.php') {
+        // css
+        wp_enqueue_style('pqrc_minitoggle_css', plugin_dir_url(__FILE__) . "assets/css/minitoggle.css");
+
+
+        // js 
+        wp_enqueue_script('pqrc_minitoggle_js', plugin_dir_url(__FILE__) . "/assets/js/minitoggle.js", ['jquery'], '1.0', true);
+
+        wp_enqueue_script('pqrc_main_js', plugin_dir_url(__FILE__) . '/assets/js/pqrc_main.js', ['jquery'], time(), true);
+    }
+}
+add_action('admin_enqueue_scripts', 'pqrc_enque_admin_scripts');
+
+// adding stylesheet for frontend
 function posts_qrcode_enque_style() {
     wp_enqueue_style('posts_to_qrcode_style', plugin_dir_url(__FILE__) . "style.css");
 }
@@ -62,14 +77,17 @@ function add_pqrc_dimenson() {
     add_settings_section('pqrc_section', 'Post to QrCode :', '', 'general',);
     add_settings_field('qrheight', 'QrCode height', 'clbc_pqrc_dimension', 'general', 'pqrc_section', ['qrheight']);
     add_settings_field('qrwidth', 'QrCode width', 'clbc_pqrc_dimension', 'general', 'pqrc_section', ['qrwidth']);
-
     add_settings_field('pqrc_country', 'Select country', 'clbc_pqrc_country', 'general', 'pqrc_section');
-    register_setting('general', 'pqrc_country', array(' sanitize_callback' => 'esc_attr'));
+    add_settings_field('pqrc_minitoggle', 'Mini toggle', 'clbc_pqrc_minitoggle', 'general', 'pqrc_section');
 
     register_setting('general', 'qrheight', array(' sanitize_callback' => 'esc_attr'));
     register_setting('general', 'qrwidth', array(' sanitize_callback' => 'esc_attr'));
+    register_setting('general', 'pqrc_country', array(' sanitize_callback' => 'esc_attr'));
+    register_setting('general', 'pqrc_minitoggle');
 }
+add_action('admin_init', 'add_pqrc_dimenson');
 
+// Add heitht and width field  
 function clbc_pqrc_dimension($args) {
     $value = get_option($args[0], 150);
     $name = $args[0];
@@ -100,14 +118,11 @@ function clbc_pqrc_country() {
     echo ' </select>';
 }
 
-add_action('admin_init', 'add_pqrc_dimenson');
 
 
-// test 
-function add_new_country($countries) {
-    array_push($countries, 'Russia', 'Ukrain', 'Turky'); //adding new values into an array
-    $countries = array_diff($countries, ['Pakistan']);  //removing values from an array
-    return $countries;
+// Show Minitoggle
+function clbc_pqrc_minitoggle() {
+    $value = get_option("pqrc_minitoggle");
+    printf('<div id="toggle1"></div>');
+    echo '<input type="hidden" id="toggle1_hidden" name="pqrc_minitoggle" value=' . "$value" . ' >';
 }
-
-add_filter('pqrc_add_country', 'add_new_country');

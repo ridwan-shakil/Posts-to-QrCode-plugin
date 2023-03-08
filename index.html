@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jQuery miniToggle.js: iOS Toggle Button Demo</title>
+<link rel="stylesheet" href="style/style.css">
+<link rel="stylesheet" href="minitoggle.css">
+
+<body>
+    <section class="holder holder-top">
+
+        <h1><strong title="Pick a Date" class="highlight">jQuery miniToggle.js: iOS Toggle Button Demo</strong></h1>
+        <div class="jquery-script-ads"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+        <h3>Go ahead&hellip; try it now.</h3>
+
+        <fieldset class="demo">
+            <div>
+            <div class="toggle"></div>
+            <h3 class="result"></h3>
+            </div>
+        </fieldset>
+
+        <fieldset class="demo colors">
+            <span class="blue"></span>
+            <span class="green"></span>
+            <span class="yellow"></span>
+            <span class="red"></span>
+            <span class="orange"></span>
+        </fieldset>
+
+
+    
+
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="minitoggle.js"></script>
+    <script src="js/script.js"></script>
+
+
+    <script type="text/javascript">
+        $('.toggle').minitoggle();
+        $('.toggle').on("toggle", function(e){
+            if (e.isActive)
+                $(".result").html("Oh, you turn me on.")
+            else
+                $(".result").html("No, you turn me off.")
+        });
+    </script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>

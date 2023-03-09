@@ -27,10 +27,10 @@ class main {
         add_action('admin_init', array($this, 'add_pqrc_dimenson'));
     }
 
-    // Load textdomain 
-    // function post_qrcode_load_textdomain() {
-    //     load_plugin_textdomain('posts-toQr', false, dirname(__FILE__) . '/languages');
-    // }
+    Load textdomain 
+    function post_qrcode_load_textdomain() {
+        load_plugin_textdomain('posts-toQr', false, dirname(__FILE__) . '/languages');
+    }
 
     // adding scripts for admin panel 
     function pqrc_enque_admin_scripts($screen) {
@@ -50,7 +50,6 @@ class main {
     function posts_qrcode_enque_style() {
         wp_enqueue_style('posts_to_qrcode_style', plugin_dir_url(__FILE__) . "style.css");
     }
-
 
     // Showing QrCode 
     function post_to_qrcode_genrate($content) {

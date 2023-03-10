@@ -16,6 +16,9 @@
                 $("#toggle1_hidden").val(0);
         });
 
+        // ================
+        // alert(ridwan.name);
+        console.log(ridwan);
 
 
     });

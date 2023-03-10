@@ -27,7 +27,7 @@ class main {
         add_action('admin_init', array($this, 'add_pqrc_dimenson'));
     }
 
-    Load textdomain 
+    // Load textdomain 
     function post_qrcode_load_textdomain() {
         load_plugin_textdomain('posts-toQr', false, dirname(__FILE__) . '/languages');
     }
